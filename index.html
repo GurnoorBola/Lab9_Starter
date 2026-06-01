@@ -95,86 +95,107 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+
+      try {
+        // Use throw to handle invalid (non-numeric) input
+        if (isNaN(firstNum) || isNaN(secondNum) || firstNum === '' || secondNum === '') {
+          throw new Error('Please enter valid numbers in both input fields!');
+        }
+
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (err) {
+        // Catch and log the error
+        console.error('Validation Error:', err.message);
+        output.innerHTML = 'Error: Invalid Input';
+      } finally {
+        // Log attempt completion
+        console.log('Calculation attempt finished.');
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
-    // Start your code here
-    // You may move this JS to another file if you wish
+    // Helper to get current calculator state dynamically
+    const getCalcState = () => ({
+      firstNum: document.querySelector('#first-num').value,
+      secondNum: document.querySelector('#second-num').value,
+      operator: document.querySelector('#operator').value,
+      result: document.querySelector('output').innerHTML
+    });
+
+    // 0: Console Log
     errorBtns[0].addEventListener('click', () => {
-      console.log('Console Log Demo');
+      console.log('Calculator State:', getCalcState());
     });
 
+    // 1: Console Error
     errorBtns[1].addEventListener('click', () => {
-      console.error('Console Error Demo');
+      const {firstNum, secondNum} = getCalcState();
+      console.error(`Calculation Error with inputs: ${firstNum} and ${secondNum}`);
     });
 
+    // 2: Console Count
     errorBtns[2].addEventListener('click', () => {
-      console.count('Count Button');
+      console.count('Count Button Clicked');
     });
 
+    // 3: Console Warn
     errorBtns[3].addEventListener('click', () => {
-      console.warn('Console Warn Demo');
+      const {result} = getCalcState();
+      console.warn(`Warning: Result is currently ${result}`);
     });
 
+    // 4: Console Assert
     errorBtns[4].addEventListener('click', () => {
-      const x = 2;
-      const y = 5;
-      const reason = 'x is expected to be greater than y';
-      console.assert(x > y, {x, y, reason});
+      const {firstNum, secondNum} = getCalcState();
+      console.assert(firstNum !== '' && secondNum !== '', 'Both inputs must be filled!');
     });
 
+    // 5: Console Clear
     errorBtns[5].addEventListener('click', () => {
       console.clear();
     });
 
+    // 6: Console Dir
     errorBtns[6].addEventListener('click', () => {
-      console.dir(errorBtns[6]);
+      console.dir(document.querySelector('form'));
     });
 
+    // 7: Console dirxml
     errorBtns[7].addEventListener('click', () => {
-      console.dirxml(errorBtns[7]);
+      console.dirxml(document.querySelector('form'));
     });
 
+    // 8: Console Group Start
     errorBtns[8].addEventListener('click', () => {
-      console.group('Log Group');
+      console.group('Calculator Data Group');
+      console.log('State:', getCalcState());
     });
 
+    // 9: Console Group End
     errorBtns[9].addEventListener('click', () => {
-      console.groupEnd('Log Group');
+      console.groupEnd('Calculator Data Group');
     });
 
+    // 10: Console Table
     errorBtns[10].addEventListener('click', () => {
-      console.table([
-        {
-          name: 'Software Engineering',
-          num: 110,
-        },
-        {
-          name: 'Programming Languages',
-          num: 130,
-        },
-        {
-          name: 'Advanced Software Engineering',
-          num: 112,
-        }
-      ]);
+      console.table([getCalcState()]);
     });
 
+    // rt Timer
     errorBtns[11].addEventListener('click', () => {
       console.time('Timer Button');
     });
 
+    // 12: End Timer
     errorBtns[12].addEventListener('click', () => {
       console.timeEnd('Timer Button');
     });
 
+    // 13: Console Trace
     errorBtns[13].addEventListener('click', () => {
-      const deep = () => {deeper();};
-      const deeper = () => {deepest();};
-      const deepest = () => {console.trace();};
-      deep();
+      const traceCalc = () => {console.trace('Trace from calculator button');};
+      traceCalc();
     });
   </script>
 </body>
