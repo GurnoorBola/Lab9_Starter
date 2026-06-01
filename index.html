@@ -88,6 +88,13 @@
   </main>
 
   <script>
+    class ValidationError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = "ValidationError";
+      }
+    }
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -97,16 +104,21 @@
       let operator = document.querySelector('#operator').value;
 
       try {
-        // Use throw to handle invalid (non-numeric) input
+        // Use throw with a custom error type to handle invalid input
         if (isNaN(firstNum) || isNaN(secondNum) || firstNum === '' || secondNum === '') {
-          throw new Error('Please enter valid numbers in both input fields!');
+          throw new ValidationError('Please enter valid numbers in both input fields!');
         }
 
         output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
       } catch (err) {
-        // Catch and log the error
-        console.error('Validation Error:', err.message);
-        output.innerHTML = 'Error: Invalid Input';
+        // Differentiate between custom validation errors and other errors
+        if (err instanceof ValidationError) {
+          console.error('Custom Validation Error:', err.message);
+          output.innerHTML = `Error: ${err.message}`;
+        } else {
+          console.error('Unexpected Error:', err.message);
+          output.innerHTML = 'An unexpected error occurred.';
+        }
       } finally {
         // Log attempt completion
         console.log('Calculation attempt finished.');
