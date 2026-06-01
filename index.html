@@ -47,6 +47,13 @@
       width: 122px;
     }
   </style>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({
+      token: "bac04f841a3943fd8c6d1df1878a26a1"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
 </head>
 
 <body>
@@ -88,6 +95,13 @@
   </main>
 
   <script>
+    // --- 1. Global Error Handler ---
+    window.onerror = function (message, source, lineno, colno, error) {
+      console.log('Sadly an error happened :(');
+      return true;
+    };
+
+    // Custom Error Class
     class ValidationError extends Error {
       constructor(message) {
         super(message);
@@ -95,6 +109,7 @@
       }
     }
 
+    // --- 2. Calculator Logic ---
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -104,14 +119,12 @@
       let operator = document.querySelector('#operator').value;
 
       try {
-        // Use throw with a custom error type to handle invalid input
         if (isNaN(firstNum) || isNaN(secondNum) || firstNum === '' || secondNum === '') {
           throw new ValidationError('Please enter valid numbers in both input fields!');
         }
 
         output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
       } catch (err) {
-        // Differentiate between custom validation errors and other errors
         if (err instanceof ValidationError) {
           console.error('Custom Validation Error:', err.message);
           output.innerHTML = `Error: ${err.message}`;
@@ -120,15 +133,13 @@
           output.innerHTML = 'An unexpected error occurred.';
         }
       } finally {
-        // Log attempt completion
         console.log('Calculation attempt finished.');
       }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
-    // Start your code here
-    // You may move this JS to another file if you wish
+    // 0: Console Log
     errorBtns[0].addEventListener('click', () => {
       console.log('Console Log Demo');
     });
@@ -198,10 +209,16 @@
     });
 
     errorBtns[13].addEventListener('click', () => {
-      const deep = () => { deeper(); };
-      const deeper = () => { deepest(); };
-      const deepest = () => { console.trace(); };
+      const deep = () => {deeper();};
+      const deeper = () => {deepest();};
+      const deepest = () => {console.trace();};
       deep();
+    });
+
+    // --- 4. Trigger Global Error ---
+    errorBtns[14].addEventListener('click', () => {
+      console.log('Triggering a global error now...');
+      triggerGlobalBoom();
     });
   </script>
 </body>
