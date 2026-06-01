@@ -115,87 +115,81 @@
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
-    // Helper to get current calculator state dynamically
-    const getCalcState = () => ({
-      firstNum: document.querySelector('#first-num').value,
-      secondNum: document.querySelector('#second-num').value,
-      operator: document.querySelector('#operator').value,
-      result: document.querySelector('output').innerHTML
-    });
-
-    // 0: Console Log
+    // Start your code here
+    // You may move this JS to another file if you wish
     errorBtns[0].addEventListener('click', () => {
-      console.log('Calculator State:', getCalcState());
+      console.log('Console Log Demo');
     });
 
-    // 1: Console Error
     errorBtns[1].addEventListener('click', () => {
-      const {firstNum, secondNum} = getCalcState();
-      console.error(`Calculation Error with inputs: ${firstNum} and ${secondNum}`);
+      console.error('Console Error Demo');
     });
 
-    // 2: Console Count
     errorBtns[2].addEventListener('click', () => {
-      console.count('Count Button Clicked');
+      console.count('Count Button');
     });
 
-    // 3: Console Warn
     errorBtns[3].addEventListener('click', () => {
-      const {result} = getCalcState();
-      console.warn(`Warning: Result is currently ${result}`);
+      console.warn('Console Warn Demo');
     });
 
-    // 4: Console Assert
     errorBtns[4].addEventListener('click', () => {
-      const {firstNum, secondNum} = getCalcState();
-      console.assert(firstNum !== '' && secondNum !== '', 'Both inputs must be filled!');
+      const x = 2;
+      const y = 5;
+      const reason = 'x is expected to be greater than y';
+      console.assert(x > y, {x, y, reason});
     });
 
-    // 5: Console Clear
     errorBtns[5].addEventListener('click', () => {
       console.clear();
     });
 
-    // 6: Console Dir
     errorBtns[6].addEventListener('click', () => {
-      console.dir(document.querySelector('form'));
+      console.dir(errorBtns[6]);
     });
 
-    // 7: Console dirxml
     errorBtns[7].addEventListener('click', () => {
-      console.dirxml(document.querySelector('form'));
+      console.dirxml(errorBtns[7]);
     });
 
-    // 8: Console Group Start
     errorBtns[8].addEventListener('click', () => {
-      console.group('Calculator Data Group');
-      console.log('State:', getCalcState());
+      console.group('Log Group');
     });
 
-    // 9: Console Group End
     errorBtns[9].addEventListener('click', () => {
-      console.groupEnd('Calculator Data Group');
+      console.groupEnd('Log Group');
     });
 
-    // 10: Console Table
     errorBtns[10].addEventListener('click', () => {
-      console.table([getCalcState()]);
+      console.table([
+        {
+          name: 'Software Engineering',
+          num: 110,
+        },
+        {
+          name: 'Programming Languages',
+          num: 130,
+        },
+        {
+          name: 'Advanced Software Engineering',
+          num: 112,
+        }
+      ]);
     });
 
-    // 11: Start Timer
     errorBtns[11].addEventListener('click', () => {
       console.time('Timer Button');
     });
 
-    // 12: End Timer
     errorBtns[12].addEventListener('click', () => {
       console.timeEnd('Timer Button');
     });
 
-    // 13: Console Trace
     errorBtns[13].addEventListener('click', () => {
-      const traceCalc = () => {console.trace('Trace from calculator button');};
-      traceCalc();
+      const deep = () => { deeper(); };
+      const deeper = () => { deepest(); };
+      const deepest = () => { console.trace(); };
+      deep();
     });
   </script>
 </body>
